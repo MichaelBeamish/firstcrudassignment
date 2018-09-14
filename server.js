@@ -52,13 +52,14 @@ app.patch('/users/:id', function(req, res) {
     let data = JSON.parse(storage);
     let result = data.find(user => user.id === parseInt(req.params.id));
     if(result){
+        let resultIndex = data.indexOf(result);
         let newobj = {
             id: parseInt(req.params.id),
             name: req.body.name,
             email: req.body.email,
             state: req.body.state
           };
-        data.splice(result.id, 1, newobj);
+        data.splice(resultIndex, 1, newobj);
         fs.writeFileSync('./storage.json', JSON.stringify(data));
         res.send(`Updated User`);
     } else{
@@ -72,7 +73,8 @@ app.delete('/users/:id', function(req, res) {
     let data = JSON.parse(storage);
     let result = data.find(user => user.id === parseInt(req.params.id));
     if(result){
-        data.splice(result.id, 1);
+        let resultIndex = data.indexOf(result);
+        data.splice(resultIndex, 1);
         fs.writeFileSync('./storage.json', JSON.stringify(data));
         res.send(`Deleted User`);
     } else{
